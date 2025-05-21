@@ -275,17 +275,17 @@ void InjectPayload(unsigned char* payload, int payloadSize, const char* targetPr
 	PROCESSENTRY32 pe32 = { 0 };
 
 	// Take a snapshot of all processes
-	hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+	hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0); //TH32CS_SNAPPROCESS = snapshot of all processes
 	if (hSnapshot == INVALID_HANDLE_VALUE) {
 		printf("CreateToolhelp32Snapshot failed\n");
 		return;
 	}
 
 	// Set the size of the structure before using it
-	pe32.dwSize = sizeof(PROCESSENTRY32);
+	pe32.dwSize = sizeof(PROCESSENTRY32); 
 
 	// Get the first process
-	if (!Process32First(hSnapshot, &pe32)) {
+	if (!Process32First(hSnapshot, &pe32)) { //Process32First gets the first process in the snapshot
 		printf("Process32First failed\n");
 		CloseHandle(hSnapshot);
 		return;
@@ -293,11 +293,11 @@ void InjectPayload(unsigned char* payload, int payloadSize, const char* targetPr
 
 	// Find the target process
 	do {
-		if (_stricmp(pe32.szExeFile, targetProcess) == 0) {
+		if (_stricmp(pe32.szExeFile, targetProcess) == 0) { //_stricmp compares the snapshot process name to the target process name
 			processId = pe32.th32ProcessID;
 			break;
 		}
-	} while (Process32Next(hSnapshot, &pe32));
+	} while (Process32Next(hSnapshot, &pe32)); // If not the correct process, Process32Next gets the next process in the snapshot
 
 	CloseHandle(hSnapshot);
 
