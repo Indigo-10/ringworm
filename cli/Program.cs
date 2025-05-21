@@ -102,7 +102,7 @@ namespace PayloadBuilder
             else
             {
                 compileInfo.Compiler = "x86_64-w64-mingw32-gcc";
-                compileInfo.ExtraFlags = "-lws2_32 -lwininet";
+                compileInfo.ExtraFlags = "-lws2_32 -lwininet -lssl -lcrypto";
                 if (config.UseEncryption)
                     compileInfo.ExtraFlags += " -DUSE_ENCRYPTION";
                 if (config.UseCompression)
